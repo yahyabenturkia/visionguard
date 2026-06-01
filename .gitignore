@@ -1,0 +1,25 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Dataset — never push images to git
+dataset/
+
+# STM32CubeIDE build artifacts
+firmware/Debug/
+firmware/Release/
+*.elf
+*.bin
+*.hex
+*.map
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
