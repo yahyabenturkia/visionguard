@@ -1,0 +1,205 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : VisionGuard Motion Controller
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+#include "main.h"
+
+/* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdlib.h>
+/* USER CODE END Includes */
+
+UART_HandleTypeDef huart2;
+
+/* USER CODE BEGIN PV */
+uint8_t rx_buffer[32];
+uint8_t rx_index = 0;
+volatile int32_t current_speed = 800;
+/* USER CODE END PV */
+
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_USART2_UART_Init(void);
+
+/* USER CODE BEGIN PFP */
+void execute_command(char *cmd);
+void move_steps(int32_t steps);
+void delay_us(uint32_t us);
+/* USER CODE END PFP */
+
+/* USER CODE BEGIN 0 */
+void delay_us(uint32_t us) {
+    uint32_t start = DWT->CYCCNT;
+    uint32_t cycles = us * (SystemCoreClock / 1000000);
+    while ((DWT->CYCCNT - start) < cycles);
+}
+/* USER CODE END 0 */
+
+int main(void)
+{
+  HAL_Init();
+  SystemClock_Config();
+  MX_GPIO_Init();
+  MX_USART2_UART_Init();
+
+  /* USER CODE BEGIN 2 */
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+  DWT->CYCCNT = 0;
+  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+
+  HAL_UART_Transmit(&huart2, (uint8_t*)"READY\n", 6, 100);
+  /* USER CODE END 2 */
+
+  uint8_t byte;
+  while (1)
+  {
+    /* USER CODE BEGIN WHILE */
+    if (HAL_UART_Receive(&huart2, &byte, 1, 10) == HAL_OK) {
+        if (byte == '\n' || byte == '\r') {
+            if (rx_index > 0) {
+                rx_buffer[rx_index] = '\0';
+                execute_command((char*)rx_buffer);
+                rx_index = 0;
+            }
+        } else if (rx_index < 31) {
+            rx_buffer[rx_index++] = byte;
+        }
+    }
+    /* USER CODE END WHILE */
+  }
+}
+
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 180;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = 2;
+  RCC_OscInitStruct.PLL.PLLR = 2;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) Error_Handler();
+
+  if (HAL_PWREx_EnableOverDrive() != HAL_OK) Error_Handler();
+
+  RCC_ClkInitTypeDef RCC_ClkInitStruct2 = {0};
+  RCC_ClkInitStruct2.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct2.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct2.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct2.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct2.APB2CLKDivider = RCC_HCLK_DIV2;
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct2, FLASH_LATENCY_5) != HAL_OK) Error_Handler();
+}
+
+static void MX_USART2_UART_Init(void)
+{
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK) Error_Handler();
+}
+
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, STEP_Pin|DIR_Pin, GPIO_PIN_RESET);
+
+  GPIO_InitStruct.Pin = B1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = LD2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = STEP_Pin|DIR_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+}
+
+/* USER CODE BEGIN 4 */
+void move_steps(int32_t steps) {
+    if (steps == 0) return;
+
+    if (steps > 0) {
+        HAL_GPIO_WritePin(GPIOB, DIR_Pin, GPIO_PIN_SET);
+    } else {
+        HAL_GPIO_WritePin(GPIOB, DIR_Pin, GPIO_PIN_RESET);
+        steps = -steps;
+    }
+
+    uint32_t half_period_us = 500000 / current_speed;
+
+    for (int32_t i = 0; i < steps; i++) {
+        HAL_GPIO_WritePin(GPIOB, STEP_Pin, GPIO_PIN_SET);
+        delay_us(half_period_us);
+        HAL_GPIO_WritePin(GPIOB, STEP_Pin, GPIO_PIN_RESET);
+        delay_us(half_period_us);
+    }
+}
+
+void execute_command(char *cmd) {
+    if (strncmp(cmd, "HOME", 4) == 0) {
+        HAL_UART_Transmit(&huart2, (uint8_t*)"OK\n", 3, 100);
+    }
+    else if (strncmp(cmd, "MOV:", 4) == 0) {
+        int32_t steps = atoi(cmd + 4);
+        move_steps(steps);
+        HAL_UART_Transmit(&huart2, (uint8_t*)"OK\n", 3, 100);
+    }
+    else if (strncmp(cmd, "SPEED:", 6) == 0) {
+        int32_t speed = atoi(cmd + 6);
+        if (speed >= 100 && speed <= 2000) {
+            current_speed = speed;
+            HAL_UART_Transmit(&huart2, (uint8_t*)"OK\n", 3, 100);
+        } else {
+            HAL_UART_Transmit(&huart2, (uint8_t*)"ERR\n", 4, 100);
+        }
+    }
+    else {
+        HAL_UART_Transmit(&huart2, (uint8_t*)"ERR\n", 4, 100);
+    }
+}
+/* USER CODE END 4 */
+
+void Error_Handler(void)
+{
+  __disable_irq();
+  while (1) {}
+}
+
+#ifdef USE_FULL_ASSERT
+void assert_failed(uint8_t *file, uint32_t line) {}
+#endif

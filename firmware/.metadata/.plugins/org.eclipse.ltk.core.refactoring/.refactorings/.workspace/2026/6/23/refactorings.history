@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;visionguard_motion&apos;" deleteContents="false" description="Delete resource &apos;visionguard_motion&apos;" element1="/visionguard_motion" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1780356774553"/>
+</session>
