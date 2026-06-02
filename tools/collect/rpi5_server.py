@@ -91,6 +91,17 @@ def handle_command(cmd, cam, counts):
             print(f"  [ERR] Capture failed: {e}")
             return "ERR:capture_failed", False
 
+    elif cmd.startswith("DELETE:"):
+        filename = cmd.split(":", 1)[1].strip()
+        for folder in (GOOD_DIR, DEFECT_DIR):
+            filepath = os.path.join(folder, filename)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+                print(f"  [DEL] Deleted: {filename}")
+                return "OK", False
+        print(f"  [DEL] File not found: {filename}")
+        return "ERR:not_found", False
+
     elif cmd == "QUIT":
         return "BYE", True
 
