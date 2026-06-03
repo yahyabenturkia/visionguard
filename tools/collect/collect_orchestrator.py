@@ -117,6 +117,15 @@ def transfer_dataset():
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:
         print("  [SCP] Transfer complete.")
+        # Clean up RPi5 after successful transfer
+        cleanup = subprocess.run([
+            "ssh", f"pi5@{RPI5_HOST}",
+            "rm -rf /home/pi5/dataset/good/* /home/pi5/dataset/defect/*"
+        ], capture_output=True, text=True)
+        if cleanup.returncode == 0:
+            print("  [SCP] RPi5 dataset cleared.")
+        else:
+            print(f"  [SCP] Warning: RPi5 cleanup failed: {cleanup.stderr}")
     else:
         print(f"  [SCP] Transfer failed: {result.stderr}")
 
