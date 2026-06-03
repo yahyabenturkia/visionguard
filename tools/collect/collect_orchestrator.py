@@ -55,6 +55,7 @@ def print_display(state):
     print(f"  Position : Vein {state['vein']:02d} / {TOTAL_VEINS}")
     print(f"  Speed    : {state['speed']} steps/sec")
     print(f"  Label    : {'✔ GOOD' if state['label'] == 'good' else '✘ DEFECT'}")
+    print(f"  Wall     : {'RIGHT' if state['wall'] == 'R' else 'LEFT'}")
     print(f"  Captured : Good: {state['counts']['good']} | Defect: {state['counts']['defect']} | Total: {state['counts']['good'] + state['counts']['defect']}")
     if state['last_file']:
         print(f"  Last     : {state['last_file']}")
@@ -62,7 +63,8 @@ def print_display(state):
         print(f"  Last     : —")
     print("─" * 51)
     print("  H=Home  ←→=Fine(1°)  N/P=Vein  ↑↓=Speed")
-    print("  1=Good  2=Defect  ENTER=Capture  D=Del  Q=Quit")
+    print("  R=Right  L=Left  1=Good  2=Defect")
+    print("  ENTER=Capture  D=Del  Q=Quit")
     print("═" * 51)
 
 # ─── STM32 Communication ──────────────────────────────────────────────────────
@@ -78,7 +80,6 @@ def stm32_connect():
     ser.setRTS(False)
     time.sleep(2)
     ser.reset_input_buffer()
-    # Wait for READY
     start = time.time()
     while time.time() - start < 5:
         if ser.in_waiting:
@@ -86,7 +87,6 @@ def stm32_connect():
             if line == "READY":
                 print(" OK")
                 return ser
-    # If no READY received, still return — firmware might already be running
     print(" OK (no READY — firmware already running)")
     return ser
 
@@ -129,15 +129,14 @@ def main():
     print("   Startup...")
     print("═" * 51)
 
-    # Connect to STM32 and RPi5
     ser = stm32_connect()
     sock = rpi5_connect()
 
-    # Session state
     state = {
         "vein": 0,
         "speed": SPEED_DEFAULT,
         "label": "good",
+        "wall": "R",
         "last_file": None,
         "counts": {"good": 0, "defect": 0},
         "homed": False,
@@ -210,9 +209,19 @@ def main():
                 state["label"] = "defect"
                 state["message"] = "Label set to DEFECT."
 
+            # ── WALL RIGHT ────────────────────────────────────────
+            elif key.lower() == 'r':
+                state["wall"] = "R"
+                state["message"] = "Wall set to RIGHT."
+
+            # ── WALL LEFT ─────────────────────────────────────────
+            elif key.lower() == 'l':
+                state["wall"] = "L"
+                state["message"] = "Wall set to LEFT."
+
             # ── CAPTURE ───────────────────────────────────────────
             elif key in ('\r', '\n', ' '):
-                r = rpi5_send(sock, f"CAPTURE:{state['label']}")
+                r = rpi5_send(sock, f"CAPTURE:{state['label']}:{state['wall']}")
                 if r.startswith("OK:"):
                     filename = r.split(":", 1)[1]
                     state["last_file"] = filename
@@ -247,7 +256,6 @@ def main():
             elif key == '\x03':
                 break
 
-            # Add message to display
             state["message_line"] = state.get("message", "")
             print_display(state)
             print(f"  {state['message']}")

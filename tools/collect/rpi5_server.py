@@ -64,9 +64,9 @@ def init_camera():
     print(" OK")
     return cam
 
-def capture_image(cam, label):
+def capture_image(cam, label, wall):
     save_dir = GOOD_DIR if label == "good" else DEFECT_DIR
-    filename = f"{label}_{timestamp()}.jpg"
+    filename = f"{label}_{wall}_{timestamp()}.jpg"
     temp_path = f"/tmp/{filename}"
     final_path = os.path.join(save_dir, filename)
     cam.capture_file(temp_path)
@@ -78,14 +78,20 @@ def handle_command(cmd, cam, counts):
     cmd = cmd.strip()
 
     if cmd.startswith("CAPTURE:"):
-        label = cmd.split(":")[1].strip().lower()
+        parts = cmd.split(":")
+        if len(parts) != 3:
+            return "ERR:invalid_format", False
+        label = parts[1].strip().lower()
+        wall = parts[2].strip().upper()
         if label not in ("good", "defect"):
             return "ERR:invalid_label", False
+        if wall not in ("R", "L"):
+            return "ERR:invalid_wall", False
         try:
-            filename, path = capture_image(cam, label)
+            filename, path = capture_image(cam, label, wall)
             counts[label] += 1
             disk = disk_space_bar()
-            print(f"  [CAP] {label.upper()} → {filename} | {disk}")
+            print(f"  [CAP] {label.upper()} {wall} → {filename} | {disk}")
             return f"OK:{filename}", False
         except Exception as e:
             print(f"  [ERR] Capture failed: {e}")
