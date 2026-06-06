@@ -196,14 +196,14 @@ def main():
 
             # ── NEXT VEIN ─────────────────────────────────────────
             elif key.lower() == 'n':
-                r = stm32_send(ser, "MOV:240")
+                r = stm32_send(ser, "MOV:120")
                 if r == "OK":
                     state["vein"] = min(state["vein"] + 1, TOTAL_VEINS)
                 state["message"] = f"N → Next vein  [{r}]"
 
             # ── PREVIOUS VEIN ─────────────────────────────────────
             elif key.lower() == 'p':
-                r = stm32_send(ser, "MOV:-240")
+                r = stm32_send(ser, "MOV:-120")
                 if r == "OK":
                     state["vein"] = max(state["vein"] - 1, 1)
                 state["message"] = f"P → Previous vein  [{r}]"
