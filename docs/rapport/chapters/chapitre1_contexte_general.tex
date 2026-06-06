@@ -1,0 +1,270 @@
+\chapter{Contexte industriel et cadre du projet}
+
+\section{Introduction}
+Ce premier chapitre vise à introduire le cadre général du projet. La première partie est
+consacrée à la présentation de Pursuit Aerospace, à l'échelle mondiale puis à travers son
+entité tunisienne, en mettant l'accent sur le site d'El Mghira où le projet a été réalisé.
+La deuxième partie présente le contexte des ceramic cores, le mode d'inspection actuel,
+ainsi que la pièce M00 étudiée. Enfin, ce chapitre définit la problématique du projet,
+les objectifs visés et la démarche de travail adoptée pour aboutir à la conception d'un
+système d'inspection automatisé.
+
+\section{Présentation de l'entreprise d'accueil}
+
+\subsection{Pursuit Aerospace dans le monde}
+Pursuit Aerospace est un groupe international spécialisé dans la fabrication de composants
+complexes de haute précision destinés principalement aux moteurs aéronautiques. L'entreprise
+est issue de la fusion entre Whitcraft et Paradigm Precision, donnant naissance à Pursuit
+Aerospace en 2023. Le groupe est implanté dans plusieurs pays, notamment les États-Unis,
+le Canada, l'Angleterre et la Tunisie, et s'appuie sur des procédés industriels avancés
+pour répondre aux exigences du secteur aéronautique.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=9cm]{pursuit_logo.png}
+\caption{Logo de Pursuit Aerospace.}
+\label{fig:pursuit_logo}
+\end{figure}
+
+\subsection{Pursuit Aerospace Tunisia}
+Pursuit Aerospace Tunisia a été officiellement créée le 19 septembre 2000, sous forme
+de société anonyme (S.A). Elle dispose de deux sites industriels : le premier est situé
+à Mégrine, sur la route de Sousse (GP1 KM7, Mégrine 2033), et le second dans la zone
+industrielle Mghira 3, Fouchana 2082. Le présent projet a été réalisé au sein de ce
+second site.
+
+En 2023, le capital social de l'entreprise s'élève à 2~300~000 dinars tunisiens. Elle
+est placée sous la direction de M. Adel Saoudi, Directeur Général, et emploie un
+effectif de 530 personnes, réparties selon les tranches d'âge présentées dans la
+figure ci-dessous. L'entreprise occupe une superficie totale de 13~800~m², dont
+9~600~m² de surface de production couverte.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=6cm]{generational_makeup.png}
+\caption{Répartition par tranches d'âge des effectifs de Pursuit Aerospace Tunisia.}
+\label{fig:effectifs}
+\end{figure}
+
+\subsection{Produits et familles de produits}
+Pursuit Aerospace Tunisia fabrique différentes familles de composants aéronautiques
+complexes, principalement destinés aux moteurs. Parmi les familles produites, on retrouve
+notamment les swirlers, mixers, cyclones, flanges, plates, elbows, connectors, structural
+airfoils, shrouds et flow path components. Ces pièces sont généralement réalisées à partir
+d'alliages techniques à base de cobalt ou de nickel et sont associées à plusieurs programmes
+moteurs majeurs.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{/home/yahya/Pictures/Screenshots/Exemples de pièces produites chez Pursuit Aerospace Tunisia.png}
+\caption{Exemples de pièces produites chez Pursuit Aerospace Tunisia.}
+\label{fig:pieces_pursuit}
+\end{figure}
+
+\subsection{Clients et exigences qualité}
+Pursuit Aerospace travaille avec des clients majeurs du secteur aéronautique et énergétique.
+Parmi les clients figurent notamment GE Aviation, Safran, Rolls-Royce, Woodward, Avio Aero
+et Unison. Ces clients imposent des exigences strictes en matière de qualité, de précision,
+de traçabilité et de stabilité du processus de fabrication. Dans ce contexte, la maîtrise
+du contrôle qualité représente un élément essentiel pour garantir la conformité des produits.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{clients_pursuit.png}
+\caption{Principaux clients de Pursuit Aerospace.}
+\label{fig:clients}
+\end{figure}
+
+\subsection{Certifications et système qualité}
+La qualité constitue un axe central dans l'activité de Pursuit Aerospace. L'entreprise
+dispose de certifications telles que AS9100 et ISO 9001, ainsi que d'accréditations NADCAP
+pour certains procédés industriels spécifiques. Ces certifications traduisent l'engagement
+de l'entreprise envers la conformité, l'amélioration continue et la satisfaction client.
+
+\subsection{Organisation générale}
+L'organisation de Pursuit Aerospace Tunisia regroupe plusieurs fonctions industrielles et
+supports, notamment la production, la qualité, les méthodes, la maintenance, l'ingénierie
+et les ressources humaines. Cette organisation permet d'assurer la coordination entre les
+différentes activités nécessaires à la fabrication et au contrôle des composants
+aéronautiques. Le présent projet s'inscrit dans cet environnement industriel, plus
+précisément au niveau du site El Mghira et de l'inspection visuelle des ceramic cores.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{organigramme_pursuit.png}
+\caption{Organigramme de Pursuit Aerospace Tunisia.}
+\label{fig:organigramme}
+\end{figure}
+
+\section{Les ceramic cores chez Pursuit Aerospace}
+
+\subsection{Rôle dans le procédé de fabrication et utilisation au site El Mghira}
+Dans le procédé de fonderie à la cire perdue pratiqué chez Pursuit Aerospace, les ceramic
+cores jouent un rôle indispensable. Ils permettent de former les cavités internes complexes
+des composants métalliques coulés, notamment les géométries en veine qui ne peuvent pas
+être obtenues par usinage après coulée. Le ceramic core est intégré dans le modèle en cire
+avant l'opération de moulage, puis éliminé après solidification du métal afin de libérer
+les cavités internes de la pièce finale.
+
+
+
+Au site El Mghira, une activité dédiée aux ceramic cores a été développée. Elle regroupe
+plusieurs opérations telles que la préparation de la matière céramique, l'injection, le
+frittage, le nettoyage et l'imprégnation. Ces étapes permettent d'obtenir des cores
+suffisamment précis et résistants pour être utilisés dans le procédé de fonderie à la
+cire perdue.
+
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : vue générale de l'unité ceramic cores au site El Mghira.}
+\caption{Vue générale de l'unité ceramic cores au site El Mghira.}
+\label{fig:unite_ceramic}
+\end{figure}
+
+\subsection{Inspection actuelle des ceramic cores : principe, moyens et limites}
+L'inspection actuelle des ceramic cores au site El Mghira repose principalement sur un
+contrôle visuel manuel. L'opérateur manipule les pièces une par une et observe les surfaces
+accessibles afin d'identifier d'éventuels défauts visibles tels que les pores, les fissures,
+les piqûres ou les zones de matière manquante.
+
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : poste d'inspection visuelle manuelle actuel.}
+\caption{Poste d'inspection visuelle manuelle actuel au site El Mghira.}
+\label{fig:poste_inspection}
+\end{figure}
+
+Pour les cores présentant des veines internes, l'inspection nécessite une observation plus
+attentive. La pièce est orientée progressivement par l'opérateur à l'aide d'un support
+rotatif manuel. L'observation des veines est réalisée avec l'aide d'un éclairage local et
+d'un support optique ou d'une lentille, afin de mieux visualiser les surfaces internes.
+
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : support rotatif manuel avec éclairage et support optique.}
+\caption{Support rotatif manuel avec éclairage utilisé pour l'inspection des veines.}
+\label{fig:support_rotatif}
+\end{figure}
+
+Cette approche présente plusieurs limites importantes. Premièrement, la détection de défauts
+de petite taille --- notamment des pores inférieurs au millimètre situés sur les parois
+internes des veines --- dépend fortement de la vigilance et de l'expérience de l'opérateur,
+introduisant une variabilité humaine significative. Deuxièmement, l'accès optique aux
+surfaces internes des veines en chevron est géométriquement difficile en raison de leur
+orientation angulaire et de l'étroitesse de l'ouverture. Troisièmement, avec 40 veines et
+deux parois par veine, le nombre total de surfaces à inspecter est de 80, rendant un
+contrôle manuel exhaustif impossible à garantir dans des délais industriels acceptables.
+
+\section{La pièce M00 : géométrie et surfaces critiques}
+
+\subsection{Description générale et géométrie des veines internes}
+Dans le cadre de son activité, Pursuit Aerospace Tunisia intègre des ceramic cores dans son procédé 
+de fonderie à la cire perdue afin de former les cavités internes complexes des composants 
+métalliques coulés des géométries qui ne peuvent être obtenues par usinage après coulée. 
+Au site El Mghira plus particulièrement, une activité dédiée à la production de ces cores a été développée, 
+couvrant l'ensemble des opérations de transformation : injection, frittage, nettoyage et imprégnation, 
+pour obtenir des pièces céramiques précises et mécaniquement résistantes.
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : vue d'ensemble des différentes références de ceramic cores.}
+\caption{Vue d'ensemble des différentes références de ceramic cores produits sur le site.}
+\label{fig:refs_cores}
+\end{figure}
+
+La pièce M00 est un disque annulaire monolithique en céramique, de couleur rose mat et
+de surface non réfléchissante. Ses dimensions principales sont les suivantes : diamètre
+extérieur d'environ 84,74~mm, diamètre intérieur d'environ 43,52~mm, et hauteur de
+23,3~mm.
+
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : vues CAO de la pièce M00 (face, profil, perspective).}
+\caption{Vues CAO de la pièce M00 : face, profil et perspective.}
+\label{fig:cao_m00}
+\end{figure}
+
+La particularité géométrique de cette pièce réside dans la présence de 40 veines
+traversantes régulièrement réparties sur la circonférence, de forme en chevron. Ces
+veines constituent les éléments fonctionnels du core : elles forment, après coulée et
+lixiviation, les canaux internes de la pièce métallique finale. Chaque veine présente
+deux parois latérales internes --- une paroi gauche et une paroi droite --- dont l'état
+de surface conditionne directement la qualité du composant produit.
+
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : zoom sur la géométrie d'une veine en chevron.}
+\caption{Zoom sur la géométrie d'une veine en chevron de la pièce M00.}
+\label{fig:veine_chevron}
+\end{figure}
+
+\subsection{Défauts ciblés, taille minimale et difficultés de détection}
+Les défauts recherchés sur la pièce M00 sont principalement des pores et des piqûres
+localisés sur les parois internes des veines, pouvant apparaître au cours du procédé de
+fabrication du core. La taille minimale de défaut à détecter est fixée à 0,8~mm de
+diamètre. Ces défauts, s'ils ne sont pas détectés à temps, peuvent affecter la conformité
+du core et influencer la qualité du procédé de fabrication associé.
+
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : exemples de défauts (pores/piqûres) sur paroi interne de veine.}
+\caption{Exemples de défauts de type pores et piqûres sur paroi interne de veine.}
+\label{fig:defauts_m00}
+\end{figure}
+
+La détection de ces défauts présente plusieurs difficultés : la surface céramique matte
+et de couleur uniforme offre peu de contraste naturel, l'orientation angulaire des veines
+limite l'accès optique direct, et le nombre élevé de surfaces à couvrir rend le contrôle
+manuel non exhaustif et non reproductible.
+
+\section{Problématique, objectifs et méthodologie adoptée}
+
+\subsection*{Problématique}
+L'inspection manuelle des ceramic cores M00, telle qu'elle est pratiquée actuellement,
+présente des limites pour garantir une détection fiable et exhaustive des défauts
+surfaciques situés sur les parois internes des veines. En raison de la géométrie complexe
+de la pièce, de l'accès visuel difficile aux zones internes et du nombre élevé de surfaces
+à contrôler, le développement d'une solution d'inspection automatisée, reproductible et
+documentable devient nécessaire afin de fiabiliser le contrôle et de mieux répondre aux
+exigences de qualité du contexte aéronautique.
+
+\subsection*{Objectifs}
+L'objectif général de ce projet est de concevoir et développer un système d'inspection
+automatisé dédié au contrôle des ceramic cores M00, capable de détecter des défauts de
+type pore ou piqûre d'un diamètre minimal de 0,8~mm sur les 80 surfaces internes des
+veines, avec un temps de cycle inférieur ou égal à 3 minutes par pièce.
+
+Les objectifs spécifiques sont :
+\begin{itemize}
+    \item Concevoir un système mécanique permettant l'indexation de la pièce et le
+    positionnement de la caméra face à chaque veine ;
+    \item Mettre en place une chaîne d'acquisition d'images adaptée à la géométrie et
+    aux caractéristiques optiques de la pièce ;
+    \item Développer et intégrer un module de classification par intelligence artificielle
+    permettant de distinguer les surfaces conformes des surfaces présentant des défauts
+    visibles ;
+    \item Valider le concept par un prototype fonctionnel et une preuve de concept du
+    module IA.
+\end{itemize}
+
+\subsection*{Démarche de travail}
+La démarche adoptée suit une progression en cinq phases : formalisation du besoin et
+structuration des exigences, conception mécanique, optique, électronique et logicielle
+du système, développement et intégration du module IA, réalisation physique du prototype,
+puis tests et validation.
+
+\begin{figure}[H]
+\centering
+\todo{Insérer figure : diagramme de Gantt du projet (mai-juin 2026).}
+\caption{Diagramme de Gantt du projet VisionGuard.}
+\label{fig:gantt}
+\end{figure}
+
+\section{Conclusion}
+Ce chapitre a présenté le cadre industriel du projet : l'entreprise Pursuit Aerospace,
+son site El Mghira, le procédé de fabrication des ceramic cores et les limites de
+l'inspection manuelle actuelle. La pièce M00 a été identifiée comme objet d'étude en
+raison de sa géométrie complexe et du défi d'inspection qu'elle représente. La
+problématique et les objectifs du projet ont été formalisés. Le chapitre suivant
+présentera la formalisation du besoin selon une approche d'ingénierie système légère,
+à travers la délimitation du système, l'identification des cas d'utilisation et la
+structuration des exigences fonctionnelles et techniques.

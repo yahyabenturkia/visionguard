@@ -1,0 +1,21 @@
+#include "stm32f446xx.h"
+
+void delay_ms(uint32_t ms) {
+    for(uint32_t i = 0; i < ms * 3195; i++) __NOP();
+}
+
+int main(void) {
+    // Enable GPIOA clock
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+
+    // Set PA5 as output
+    GPIOA->MODER &= ~(3U << 10);
+    GPIOA->MODER |=  (1U << 10);
+
+    while(1) {
+        GPIOA->ODR |=  (1U << 5);  // PA5 HIGH — LEDs ON
+        delay_ms(1000);
+        GPIOA->ODR &= ~(1U << 5);  // PA5 LOW — LEDs OFF
+        delay_ms(1000);
+    }
+}
