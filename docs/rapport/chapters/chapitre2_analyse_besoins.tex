@@ -64,6 +64,7 @@ Les acteurs externes identifiés sont les suivants :
 \end{figure}
 
 % --------------------------------------------------------
+\newpage
 \subsection{Analyse des interactions système-environnement}
 \label{sec:interactions}
 
@@ -73,15 +74,15 @@ identifiés en exigences fonctionnelles, techniques ou contraintes de conception
 constitue ainsi une étape intermédiaire entre la délimitation du système et la formulation
 du cahier des charges.
 
-Le tableau suivant synthétise les interactions retenues.
-
+Le tableau suivant synthétise les interactions retenues:
+\vspace{-0.5cm}
 \renewcommand{\arraystretch}{1.3}
-\begin{longtable}{|p{1.5cm}|p{6cm}|p{4cm}|p{4cm}|}
+\begin{longtable}{|p{1cm}|p{6cm}|p{3cm}|p{5cm}|}
 \caption{Interactions entre le système VisionGuard et son environnement.}
-\label{tab:interactions} \\
+\label{tab:interactions}\\
 \hline
 \rowcolor{gray!20}
-\textbf{ID} & \textbf{Interaction} & \textbf{Acteur externe} & \textbf{Nature de l'échange} \\
+\textbf{ID} & \textbf{Interaction} & \textbf{Acteur\newline externe} & \textbf{Nature de l'échange} \\
 \hline
 \endfirsthead
 \hline
@@ -100,7 +101,6 @@ Le tableau suivant synthétise les interactions retenues.
 \textbf{I-07} & Contraintes d'encombrement, de poussière et de manipulation & Environnement atelier & Contrainte d'intégration \\ \hline
 \textbf{I-08} & Accès aux composants, réglages et opérations d'entretien & Maintenance & Contrainte de maintenabilité \\ \hline
 \end{longtable}
-
 % --------------------------------------------------------
 \section{Cas d'utilisation}
 % --------------------------------------------------------
@@ -131,7 +131,7 @@ l'accessibilité, au réglage, au diagnostic et au remplacement des composants.
 Le diagramme de cas d'utilisation représente les interactions fonctionnelles entre les
 acteurs identifiés et le système VisionGuard. Il décrit les scénarios d'utilisation du
 système sans préjuger des choix techniques de réalisation.
-
+\vspace{1cm}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.90\textwidth]{usecase_visionguard.png}
@@ -140,14 +140,16 @@ système sans préjuger des choix techniques de réalisation.
 \end{figure}
 
 % --------------------------------------------------------
+\newpage
 \subsection{Description synthétique des cas d'utilisation}
 
 Le tableau suivant présente une description synthétique de chaque cas d'utilisation
 identifié, en précisant l'acteur concerné, le scénario nominal et le résultat attendu.
+%\clearpage
 
 \renewcommand{\arraystretch}{1.3}
 \small
-\begin{longtable}{|p{1.5cm}|p{2.5cm}|p{5.5cm}|p{4cm}|}
+\begin{longtable}{|p{1.27cm}|p{2.5cm}|p{6cm}|p{5.23cm}|}
 \caption{Description synthétique des cas d'utilisation du système VisionGuard.}
 \label{tab:usecase} \\
 \hline
@@ -189,6 +191,7 @@ identifié, en précisant l'acteur concerné, le scénario nominal et le résult
 \end{longtable}
 
 % --------------------------------------------------------
+\newpage
 \section{Spécification des exigences}
 % --------------------------------------------------------
 
@@ -198,9 +201,9 @@ Les exigences fonctionnelles décrivent ce que le système VisionGuard doit êtr
 réaliser. Elles sont directement dérivées des cas d'utilisation identifiés en
 section~\ref{sec:usecase} et des interactions système-environnement définies en
 section~\ref{sec:interactions}.
-
+%\clearpage
 \renewcommand{\arraystretch}{1.3}
-\begin{longtable}{|p{1.5cm}|p{10.5cm}|p{2.5cm}|}
+\begin{longtable}{|p{1.2cm}|p{12.3cm}|p{1.5cm}|}
 \caption{Exigences fonctionnelles du système VisionGuard.}
 \label{tab:ef} \\
 \hline
@@ -236,15 +239,16 @@ section~\ref{sec:interactions}.
 \end{longtable}
 
 % --------------------------------------------------------
+\newpage
 \subsection{Exigences non fonctionnelles}
 
 Les exigences non fonctionnelles définissent les contraintes de performance, d'intégration,
 de robustesse et d'environnement auxquelles le système VisionGuard doit se conformer,
 indépendamment des fonctions qu'il assure.
-
+%\clearpage
 \renewcommand{\arraystretch}{1.3}
 \small
-\begin{longtable}{|p{1.5cm}|p{3cm}|p{3cm}|p{3.5cm}|p{2.5cm}|}
+\begin{longtable}{|p{1.3cm}|p{3.6cm}|p{4cm}|p{3.6cm}|p{2.5cm}|}
 \caption{Exigences non fonctionnelles du système VisionGuard.}
 \label{tab:en} \\
 \hline
@@ -259,14 +263,14 @@ indépendamment des fonctions qu'il assure.
 \endhead
 \hline
 \endfoot
-\textbf{EN-01} & Temps de cycle d'inspection complet
+\textbf{EN-01} & Temps de cycle\newline d'inspection complet
     & Durée mesurée par pièce
     & $\leq$ 3 minutes
     & Objectif projet \\ \hline
 \textbf{EN-02} & Répétabilité de l'indexation angulaire
     & Écart angulaire mesuré sur indexations répétées
     & Écart inférieur à $\pm$1° sur l'ensemble des positions
-    & Besoin d'acquisition \\ \hline
+    & Besoin\newline d'acquisition \\ \hline
 \textbf{EN-03} & Résolution spatiale de détection
     & Taille minimale du défaut détectable
     & Défaut visé $\geq$ 0,8~mm de diamètre
@@ -275,11 +279,11 @@ indépendamment des fonctions qu'il assure.
     & Surface au sol occupée
     & $\leq$ 1~m²
     & Contrainte atelier \\ \hline
-\textbf{EN-05} & Alimentation électrique
+\textbf{EN-05} & Alimentation\newline électrique
     & Type de source utilisée
     & 220~V AC secteur standard avec conversions adaptées
     & Contrainte d'intégration \\ \hline
-\textbf{EN-06} & Résistance à l'environnement atelier
+\textbf{EN-06} & Résistance à\newline l'environnement\newline atelier
     & Fonctionnement en présence de poussière céramique et de manipulations répétées
     & Composants protégés et montage robuste
     & Environnement atelier \\ \hline
@@ -291,8 +295,8 @@ indépendamment des fonctions qu'il assure.
     & Netteté des images après indexation
     & Image exploitable sans flou significatif pour la détection du défaut minimal visé
     & Besoin vision \\ \hline
-\textbf{EN-09} & Fiabilité de communication entre modules
-    & Continuité des échanges pendant un cycle complet
+\textbf{EN-09} & Fiabilité de\newline communication entre modules
+    & Continuité des échanges pendant un cycle\newline complet
     & Aucune interruption ni commande non exécutée observée lors des tests
     & Besoin d'intégration \\ \hline
 \textbf{EN-10} & Sécurité opérateur
@@ -308,10 +312,10 @@ Les critères de validation permettent de vérifier, lors de la phase de tests, 
 exigences formulées sont effectivement satisfaites par le système réalisé. Ils constituent
 le lien direct entre la spécification des exigences et les résultats de validation qui
 seront présentés au chapitre~5.
-
+\vspace{-0.5cm}
 \renewcommand{\arraystretch}{1.3}
 \small
-\begin{longtable}{|p{1.5cm}|p{7cm}|p{7cm}|}
+\begin{longtable}{|p{1.3cm}|p{7cm}|p{7.2cm}|}
 \caption{Critères de validation associés aux exigences.}
 \label{tab:validation} \\
 \hline
@@ -390,7 +394,7 @@ au suivi des résultats d'inspection.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\textwidth]{decomposition_visionguard.png}
+    \includegraphics[width=0.74\textwidth]{decomposition_visionguard.png}
     \caption{Schéma de décomposition fonctionnelle du système VisionGuard.}
     \label{fig:decomposition}
 \end{figure}
@@ -445,10 +449,11 @@ d'occurrence et du niveau de risque résultant.
 
 Le tableau suivant présente une synthèse des risques identifiés lors de la phase de
 conception, classés selon leur niveau de criticité.
-
+\vspace{-0.5cm}
 \renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{3pt}
 \footnotesize
-\begin{longtable}{|p{2.8cm}|p{2.8cm}|c|c|p{1.8cm}|p{7cm}|}
+\begin{longtable}{|p{3cm}|p{3cm}|c|c|p{1.9cm}|p{7.4cm}|}
 \caption{Analyse préliminaire des risques du système VisionGuard.}
 \label{tab:risques} \\
 \hline
@@ -495,7 +500,7 @@ Temps de cycle dépassé
     & Optimisation séquence, réduction temps morts, parallélisation \\ \hline
 Panne composant électronique
     & Défaillance caméra, moteur, driver
-    & 4 & 2 & 8 — Faible
+    & 5 & 2 & 10 — Moyen
     & Documentation câblage, rechanges identifiés, tests unitaires \\ \hline
 Accès optique insuffisant
     & Géométrie chevron, angle d'observation limité
@@ -512,6 +517,7 @@ Perte de communication
 \multicolumn{6}{|l|}{\textit{C = Criticité (1--5) \quad P = Probabilité (1--5) \quad Niveau = C $\times$ P \quad Faible~: $\leq$8 \quad Moyen~: 9--12 \quad Élevé~: $\geq$13}} \\
 \hline
 \end{longtable}
+
 % --------------------------------------------------------
 \section{Conclusion}
 % --------------------------------------------------------

@@ -25,20 +25,20 @@
 \contentsline {section}{\numberline {2.1}Introduction}{9}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Délimitation du système et analyse des interactions}{9}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Diagramme de contexte}{9}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Analyse des interactions système-environnement}{10}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.2}Analyse des interactions système-environnement}{11}{subsection.2.2.2}%
 \contentsline {section}{\numberline {2.3}Cas d'utilisation}{11}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Identification des acteurs}{11}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Diagramme de cas d'utilisation}{11}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Description synthétique des cas d'utilisation}{12}{subsection.2.3.3}%
-\contentsline {section}{\numberline {2.4}Spécification des exigences}{13}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Exigences fonctionnelles}{13}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}Exigences non fonctionnelles}{14}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Critères de validation associés}{15}{subsection.2.4.3}%
-\contentsline {section}{\numberline {2.5}Décomposition fonctionnelle du système}{16}{section.2.5}%
-\contentsline {subsection}{\numberline {2.5.1}Sous-systèmes principaux}{16}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.3.2}Diagramme de cas d'utilisation}{12}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Description synthétique des cas d'utilisation}{13}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}Spécification des exigences}{14}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Exigences fonctionnelles}{14}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Exigences non fonctionnelles}{15}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Critères de validation associés}{16}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Décomposition fonctionnelle du système}{17}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Sous-systèmes principaux}{17}{subsection.2.5.1}%
 \contentsline {subsection}{\numberline {2.5.2}Cycle opérationnel d'inspection}{17}{subsection.2.5.2}%
-\contentsline {section}{\numberline {2.6}Analyse préliminaire des risques}{18}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Conclusion}{19}{section.2.7}%
+\contentsline {section}{\numberline {2.6}Analyse préliminaire des risques}{19}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Conclusion}{20}{section.2.7}%
 \contentsline {chapter}{\numberline {3}Conception du Système VisionGuard}{21}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Sous-système mécanique}{21}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Table d'indexation rotative}{21}{subsection.3.1.1}%
