@@ -1,40 +1,75 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Conception du Système VisionGuard}{21}{chapter.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Conception du système d'inspection automatisé}{21}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Sous-système mécanique}{21}{section.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Table d'indexation rotative}{21}{subsection.3.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Mécanisme de positionnement caméra}{21}{subsection.3.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Structure mécanique}{21}{subsection.3.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Sous-système de vision}{21}{section.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Sélection de la caméra}{21}{subsection.3.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Optique}{21}{subsection.3.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Éclairage}{21}{subsection.3.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Sous-système électronique et contrôle}{21}{section.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Architecture matérielle}{21}{subsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Driver moteur TMC2208}{21}{subsection.3.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}Alimentation}{22}{subsection.3.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}Assignation des broches STM32}{22}{subsection.3.3.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Assignation des signaux STM32 Nucleo F446RE\relax }}{22}{table.caption.23}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Sous-système logiciel}{22}{section.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Architecture logicielle globale}{22}{subsection.3.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Flux de données et séquence de commandes du système VisionGuard\relax }}{22}{figure.caption.24}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Firmware STM32 — Contrôle mouvement}{22}{subsection.3.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Serveur RPi5 — Acquisition image}{22}{subsection.3.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Orchestrateur Laptop — Coordination système}{23}{subsection.3.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.5}Protocole de communication UART}{23}{subsection.3.4.5}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Protocole UART Laptop $\leftrightarrow $ STM32 (115200 baud)\relax }}{23}{table.caption.25}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.6}Protocole TCP RPi5}{23}{subsection.3.4.6}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Protocole TCP Laptop $\leftrightarrow $ RPi5\relax }}{23}{table.caption.26}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}Module d'intelligence artificielle}{23}{section.3.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Approche de détection}{23}{subsection.3.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Pipeline de collecte de données}{23}{subsection.3.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Architecture du modèle}{23}{subsection.3.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.6}Conclusion}{24}{section.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Introduction}{21}{section.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Principe général de la solution et justification des choix}{21}{section.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Analyse des solutions envisagées}{21}{subsection.3.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Comparaison des solutions d'inspection envisagées\relax }}{22}{table.caption.23}\protected@file@percent }
+\newlabel{tab:comparaison_solutions}{{3.1}{22}{Comparaison des solutions d'inspection envisagées\relax }{table.caption.23}{}}
+\newlabel{tab:comparaison_solutions@cref}{{[table][1][3]3.1}{[1][21][]22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Principe de fonctionnement de la solution retenue}{22}{subsection.3.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Chaîne fonctionnelle du système VisionGuard\relax }}{23}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:chaine_fonctionnelle}{{3.1}{23}{Chaîne fonctionnelle du système VisionGuard\relax }{figure.caption.24}{}}
+\newlabel{fig:chaine_fonctionnelle@cref}{{[figure][1][3]3.1}{[1][22][]23}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Architecture globale du système}{23}{section.3.3}\protected@file@percent }
+\newlabel{sec:archi_globale}{{3.3}{23}{Architecture globale du système}{section.3.3}{}}
+\newlabel{sec:archi_globale@cref}{{[section][3][3]3.3}{[1][23][]23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Architecture globale du système VisionGuard\relax }}{23}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:archi_globale}{{3.2}{23}{Architecture globale du système VisionGuard\relax }{figure.caption.25}{}}
+\newlabel{fig:archi_globale@cref}{{[figure][2][3]3.2}{[1][23][]23}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Conception mécanique}{24}{section.3.4}\protected@file@percent }
+\newlabel{sec:conception_meca}{{3.4}{24}{Conception mécanique}{section.3.4}{}}
+\newlabel{sec:conception_meca@cref}{{[section][4][3]3.4}{[1][24][]24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Vue CAO 3D du système VisionGuard\relax }}{24}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:cao_visionguard}{{3.3}{24}{Vue CAO 3D du système VisionGuard\relax }{figure.caption.26}{}}
+\newlabel{fig:cao_visionguard@cref}{{[figure][3][3]3.3}{[1][24][]24}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Châssis et structure porteuse}{24}{subsection.3.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Support de pièce, poulie-disque et transmission par courroie}{25}{subsection.3.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Axe fixe, roulements et support caméra}{25}{subsection.3.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.4}Support d'éclairage}{25}{subsection.3.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Sous-systèmes de mouvement}{25}{section.3.5}\protected@file@percent }
+\newlabel{sec:mouvement}{{3.5}{25}{Sous-systèmes de mouvement}{section.3.5}{}}
+\newlabel{sec:mouvement@cref}{{[section][5][3]3.5}{[1][25][]25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Système de rotation et d'indexation angulaire de la pièce}{25}{subsection.3.5.1}\protected@file@percent }
+\newlabel{eq:resolution_angulaire}{{3.1}{26}{Système de rotation et d'indexation angulaire de la pièce}{equation.3.5.1}{}}
+\newlabel{eq:resolution_angulaire@cref}{{[equation][1][3]3.1}{[1][26][]26}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Protocole de commande UART — STM32 Nucleo F446RE\relax }}{26}{table.caption.27}\protected@file@percent }
+\newlabel{tab:uart_protocol}{{3.2}{26}{Protocole de commande UART — STM32 Nucleo F446RE\relax }{table.caption.27}{}}
+\newlabel{tab:uart_protocol@cref}{{[table][2][3]3.2}{[1][26][]26}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Positionnement angulaire de la caméra}{26}{subsection.3.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Sous-système optique et éclairage}{27}{section.3.6}\protected@file@percent }
+\newlabel{sec:optique}{{3.6}{27}{Sous-système optique et éclairage}{section.3.6}{}}
+\newlabel{sec:optique@cref}{{[section][6][3]3.6}{[1][27][]27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}Choix de la caméra et de l'objectif}{27}{subsection.3.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}Champ de vision, profondeur de champ et éclairage LED}{27}{subsection.3.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Paramètres du circuit d'éclairage LED\relax }}{28}{table.caption.28}\protected@file@percent }
+\newlabel{tab:circuit_led}{{3.3}{28}{Paramètres du circuit d'éclairage LED\relax }{table.caption.28}{}}
+\newlabel{tab:circuit_led@cref}{{[table][3][3]3.3}{[1][28][]28}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.7}Architecture électronique et logicielle}{28}{section.3.7}\protected@file@percent }
+\newlabel{sec:archi_elec_log}{{3.7}{28}{Architecture électronique et logicielle}{section.3.7}{}}
+\newlabel{sec:archi_elec_log@cref}{{[section][7][3]3.7}{[1][28][]28}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.1}Architecture électronique et alimentation}{28}{subsection.3.7.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Schéma du circuit d'éclairage — commande par transistor 2N2222\relax }}{29}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:circuit_eclairage}{{3.4}{29}{Schéma du circuit d'éclairage — commande par transistor 2N2222\relax }{figure.caption.29}{}}
+\newlabel{fig:circuit_eclairage@cref}{{[figure][4][3]3.4}{[1][29][]29}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces Affectation des broches STM32 Nucleo F446RE\relax }}{29}{table.caption.30}\protected@file@percent }
+\newlabel{tab:pin_stm32}{{3.4}{29}{Affectation des broches STM32 Nucleo F446RE\relax }{table.caption.30}{}}
+\newlabel{tab:pin_stm32@cref}{{[table][4][3]3.4}{[1][29][]29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.2}Architecture logicielle et flux de données}{30}{subsection.3.7.2}\protected@file@percent }
+\newlabel{sec:archi_log}{{3.7.2}{30}{Architecture logicielle et flux de données}{subsection.3.7.2}{}}
+\newlabel{sec:archi_log@cref}{{[subsection][2][3,7]3.7.2}{[1][29][]30}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.8}Cycle complet d'inspection}{30}{section.3.8}\protected@file@percent }
+\newlabel{sec:cycle_inspection}{{3.8}{30}{Cycle complet d'inspection}{section.3.8}{}}
+\newlabel{sec:cycle_inspection@cref}{{[section][8][3]3.8}{[1][30][]30}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces Flux de données inter-nœuds lors d'un cycle d'inspection\relax }}{31}{table.caption.31}\protected@file@percent }
+\newlabel{tab:flux_donnees}{{3.5}{31}{Flux de données inter-nœuds lors d'un cycle d'inspection\relax }{table.caption.31}{}}
+\newlabel{tab:flux_donnees@cref}{{[table][5][3]3.5}{[1][30][]31}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.9}Conclusion}{32}{section.3.9}\protected@file@percent }
 \@setckpt{chapters/chapitre3_conception_systeme}{
-\setcounter{page}{25}
-\setcounter{equation}{0}
+\setcounter{page}{33}
+\setcounter{equation}{1}
 \setcounter{enumi}{9}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
@@ -43,13 +78,14 @@
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{chapter}{3}
-\setcounter{section}{6}
+\setcounter{section}{9}
 \setcounter{subsection}{0}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{1}
-\setcounter{table}{3}
+\setcounter{figure}{4}
+\setcounter{table}{5}
+\setcounter{parentequation}{0}
 \setcounter{float@type}{8}
 \setcounter{caption@flags}{0}
 \setcounter{continuedfloat}{0}
@@ -57,9 +93,9 @@
 \setcounter{subtable}{0}
 \setcounter{LT@tables}{6}
 \setcounter{LT@chunks}{4}
-\setcounter{Item}{9}
+\setcounter{Item}{18}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{66}
+\setcounter{bookmark@seq@number}{62}
 \setcounter{lofdepth}{1}
 \setcounter{lotdepth}{1}
 \setcounter{lstnumber}{1}

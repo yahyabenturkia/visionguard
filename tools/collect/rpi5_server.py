@@ -22,6 +22,7 @@ PORT        = 9999
 DATASET_DIR = "/home/pi5/dataset"
 GOOD_DIR    = os.path.join(DATASET_DIR, "good")
 DEFECT_DIR  = os.path.join(DATASET_DIR, "defect")
+INSPECT_DIR = "/home/pi5/inspection"
 RESOLUTION  = (1456, 1088)
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -65,7 +66,12 @@ def init_camera():
     return cam
 
 def capture_image(cam, label, wall):
-    save_dir = GOOD_DIR if label == "good" else DEFECT_DIR
+    if label == "good":
+        save_dir = GOOD_DIR
+    elif label == "defect":
+        save_dir = DEFECT_DIR
+    else:
+        save_dir = INSPECT_DIR
     filename = f"{label}_{wall}_{timestamp()}.jpg"
     temp_path = f"/tmp/{filename}"
     final_path = os.path.join(save_dir, filename)
@@ -83,7 +89,7 @@ def handle_command(cmd, cam, counts):
             return "ERR:invalid_format", False
         label = parts[1].strip().lower()
         wall = parts[2].strip().upper()
-        if label not in ("good", "defect"):
+        if label not in ("good", "defect" , "inspect"):
             return "ERR:invalid_label", False
         if wall not in ("R", "L"):
             return "ERR:invalid_wall", False
@@ -154,6 +160,7 @@ def handle_session(conn, cam):
 def main():
     os.makedirs(GOOD_DIR, exist_ok=True)
     os.makedirs(DEFECT_DIR, exist_ok=True)
+    os.makedirs(INSPECT_DIR, exist_ok=True)
 
     print("\n" + "═" * 50)
     print("   VISIONGUARD — RPi5 IMAGE SERVER")

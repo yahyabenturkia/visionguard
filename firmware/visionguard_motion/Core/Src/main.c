@@ -187,6 +187,14 @@ void execute_command(char *cmd) {
             HAL_UART_Transmit(&huart2, (uint8_t*)"ERR\n", 4, 100);
         }
     }
+    else if (strncmp(cmd, "LIGHT:ON", 8) == 0) {
+        HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+        HAL_UART_Transmit(&huart2, (uint8_t*)"OK\n", 3, 100);
+    }
+    else if (strncmp(cmd, "LIGHT:OFF", 9) == 0) {
+        HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+        HAL_UART_Transmit(&huart2, (uint8_t*)"OK\n", 3, 100);
+    }
     else {
         HAL_UART_Transmit(&huart2, (uint8_t*)"ERR\n", 4, 100);
     }

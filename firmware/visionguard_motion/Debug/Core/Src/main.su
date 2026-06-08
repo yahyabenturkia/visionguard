@@ -5,4 +5,4 @@
 ../Core/Src/main.c:121:13:MX_GPIO_Init	48	static
 ../Core/Src/main.c:152:6:move_steps	24	static
 ../Core/Src/main.c:172:6:execute_command	24	static
-../Core/Src/main.c:196:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:204:6:Error_Handler	4	static,ignoring_inline_asm

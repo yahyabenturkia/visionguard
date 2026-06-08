@@ -63,7 +63,7 @@ def print_display(state):
         print(f"  Last     : —")
     print("─" * 51)
     print("  H=Home  ←→=Fine(1°)  N/P=Vein  ↑↓=Speed")
-    print("  R=Right  L=Left  1=Good  2=Defect")
+    print("  R=Right  L=Left  F=Light  1=Good  2=Defect")
     print("  ENTER=Capture  D=Del  Q=Quit")
     print("═" * 51)
 
@@ -149,6 +149,7 @@ def main():
         "last_file": None,
         "counts": {"good": 0, "defect": 0},
         "homed": False,
+        "light": False,
         "message": "Press H to home before starting."
     }
 
@@ -227,6 +228,17 @@ def main():
             elif key.lower() == 'l':
                 state["wall"] = "L"
                 state["message"] = "Wall set to LEFT."
+            
+            # ── LIGHT TOGGLE ──────────────────────────────────────────────
+            elif key.lower() == 'f':
+                if state.get("light", False):
+                    r = stm32_send(ser, "LIGHT:OFF")
+                    state["light"] = False
+                    state["message"] = f"💡 Light OFF  [{r}]"
+                else:
+                    r = stm32_send(ser, "LIGHT:ON")
+                    state["light"] = True
+                    state["message"] = f"💡 Light ON  [{r}]"
 
             # ── CAPTURE ───────────────────────────────────────────
             elif key in ('\r', '\n', ' '):
@@ -255,6 +267,8 @@ def main():
 
             # ── QUIT ──────────────────────────────────────────────
             elif key.lower() == 'q':
+                stm32_send(ser, "LIGHT:OFF")
+                state["light"] = False
                 r = rpi5_send(sock, "QUIT")
                 state["message"] = "Session ended. Transferring dataset..."
                 print_display(state)
@@ -263,6 +277,7 @@ def main():
 
             # ── CTRL+C ────────────────────────────────────────────
             elif key == '\x03':
+                stm32_send(ser, "LIGHT:OFF")
                 break
 
             state["message_line"] = state.get("message", "")
@@ -272,6 +287,7 @@ def main():
     except KeyboardInterrupt:
         print("\n  Interrupted.")
     finally:
+        stm32_send(ser, "LIGHT:OFF")
         ser.close()
         sock.close()
         total = state["counts"]["good"] + state["counts"]["defect"]

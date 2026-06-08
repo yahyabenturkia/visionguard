@@ -8,11 +8,13 @@
 \contentsline {table}{\numberline {2.5}{\ignorespaces Critères de validation associés aux exigences.\relax }}{16}{table.2.5}%
 \contentsline {table}{\numberline {2.6}{\ignorespaces Analyse préliminaire des risques du système VisionGuard.\relax }}{19}{table.2.6}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Assignation des signaux STM32 Nucleo F446RE\relax }}{22}{table.caption.23}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Protocole UART Laptop $\leftrightarrow $ STM32 (115200 baud)\relax }}{23}{table.caption.25}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Protocole TCP Laptop $\leftrightarrow $ RPi5\relax }}{23}{table.caption.26}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Comparaison des solutions d'inspection envisagées\relax }}{22}{table.caption.23}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Protocole de commande UART — STM32 Nucleo F446RE\relax }}{26}{table.caption.27}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Paramètres du circuit d'éclairage LED\relax }}{28}{table.caption.28}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Affectation des broches STM32 Nucleo F446RE\relax }}{29}{table.caption.30}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces Flux de données inter-nœuds lors d'un cycle d'inspection\relax }}{31}{table.caption.31}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Validation des critères de succès VisionGuard\relax }}{27}{table.caption.29}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces Validation des critères de succès VisionGuard\relax }}{35}{table.caption.34}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

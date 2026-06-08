@@ -39,60 +39,56 @@
 \contentsline {subsection}{\numberline {2.5.2}Cycle opérationnel d'inspection}{17}{subsection.2.5.2}%
 \contentsline {section}{\numberline {2.6}Analyse préliminaire des risques}{19}{section.2.6}%
 \contentsline {section}{\numberline {2.7}Conclusion}{20}{section.2.7}%
-\contentsline {chapter}{\numberline {3}Conception du Système VisionGuard}{21}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Sous-système mécanique}{21}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Table d'indexation rotative}{21}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Mécanisme de positionnement caméra}{21}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Structure mécanique}{21}{subsection.3.1.3}%
-\contentsline {section}{\numberline {3.2}Sous-système de vision}{21}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Sélection de la caméra}{21}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Optique}{21}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Éclairage}{21}{subsection.3.2.3}%
-\contentsline {section}{\numberline {3.3}Sous-système électronique et contrôle}{21}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Architecture matérielle}{21}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Driver moteur TMC2208}{21}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Alimentation}{22}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Assignation des broches STM32}{22}{subsection.3.3.4}%
-\contentsline {section}{\numberline {3.4}Sous-système logiciel}{22}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Architecture logicielle globale}{22}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Firmware STM32 — Contrôle mouvement}{22}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Serveur RPi5 — Acquisition image}{22}{subsection.3.4.3}%
-\contentsline {subsection}{\numberline {3.4.4}Orchestrateur Laptop — Coordination système}{23}{subsection.3.4.4}%
-\contentsline {subsection}{\numberline {3.4.5}Protocole de communication UART}{23}{subsection.3.4.5}%
-\contentsline {subsection}{\numberline {3.4.6}Protocole TCP RPi5}{23}{subsection.3.4.6}%
-\contentsline {section}{\numberline {3.5}Module d'intelligence artificielle}{23}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}Approche de détection}{23}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}Pipeline de collecte de données}{23}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}Architecture du modèle}{23}{subsection.3.5.3}%
-\contentsline {section}{\numberline {3.6}Conclusion}{24}{section.3.6}%
-\contentsline {chapter}{\numberline {4}Implémentation et Tests}{25}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Implémentation matérielle}{25}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Assemblage mécanique}{25}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Câblage électronique}{25}{subsection.4.1.2}%
-\contentsline {section}{\numberline {4.2}Implémentation logicielle}{25}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Environnement de développement}{25}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Firmware STM32}{25}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Scripts Python}{26}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}Tests et validation}{26}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Tests du sous-système mécanique}{26}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Tests du sous-système vision}{26}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Tests d'intégration système}{26}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}Entraînement et validation du modèle IA}{26}{subsection.4.3.4}%
-\contentsline {section}{\numberline {4.4}Conclusion}{26}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Résultats et Validation}{27}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Résultats du système d'inspection}{27}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Performance du sous-système mécanique}{27}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Performance du sous-système vision}{27}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Performance du modèle IA}{27}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Performance globale — temps de cycle}{27}{subsection.5.1.4}%
-\contentsline {section}{\numberline {5.2}Validation des critères de succès}{27}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Discussion}{27}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Perspectives d'industrialisation}{27}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Conclusion}{28}{section.5.5}%
-\contentsline {chapter}{Conclusion Générale}{29}{chapter*.30}%
-\contentsline {chapter}{\numberline {A}Schémas Électroniques et Câblage}{30}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Schéma de câblage complet}{30}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Configuration TMC2208}{30}{section.A.2}%
-\contentsline {chapter}{\numberline {B}Extraits de Code Source}{31}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Firmware STM32 — Parseur de commandes UART}{31}{section.B.1}%
-\contentsline {section}{\numberline {B.2}Script RPi5 — Serveur TCP acquisition}{31}{section.B.2}%
+\contentsline {chapter}{\numberline {3}Conception du système d'inspection automatisé}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{21}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Principe général de la solution et justification des choix}{21}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Analyse des solutions envisagées}{21}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Principe de fonctionnement de la solution retenue}{22}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Architecture globale du système}{23}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Conception mécanique}{24}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Châssis et structure porteuse}{24}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Support de pièce, poulie-disque et transmission par courroie}{25}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Axe fixe, roulements et support caméra}{25}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Support d'éclairage}{25}{subsection.3.4.4}%
+\contentsline {section}{\numberline {3.5}Sous-systèmes de mouvement}{25}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Système de rotation et d'indexation angulaire de la pièce}{25}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Positionnement angulaire de la caméra}{26}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}Sous-système optique et éclairage}{27}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Choix de la caméra et de l'objectif}{27}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Champ de vision, profondeur de champ et éclairage LED}{27}{subsection.3.6.2}%
+\contentsline {section}{\numberline {3.7}Architecture électronique et logicielle}{28}{section.3.7}%
+\contentsline {subsection}{\numberline {3.7.1}Architecture électronique et alimentation}{28}{subsection.3.7.1}%
+\contentsline {subsection}{\numberline {3.7.2}Architecture logicielle et flux de données}{30}{subsection.3.7.2}%
+\contentsline {section}{\numberline {3.8}Cycle complet d'inspection}{30}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Conclusion}{32}{section.3.9}%
+\contentsline {chapter}{\numberline {4}Implémentation et Tests}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Implémentation matérielle}{33}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Assemblage mécanique}{33}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Câblage électronique}{33}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Implémentation logicielle}{33}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Environnement de développement}{33}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Firmware STM32}{33}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Scripts Python}{34}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Tests et validation}{34}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Tests du sous-système mécanique}{34}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Tests du sous-système vision}{34}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Tests d'intégration système}{34}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Entraînement et validation du modèle IA}{34}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}Conclusion}{34}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Résultats et Validation}{35}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Résultats du système d'inspection}{35}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Performance du sous-système mécanique}{35}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Performance du sous-système vision}{35}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Performance du modèle IA}{35}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Performance globale — temps de cycle}{35}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Validation des critères de succès}{35}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Discussion}{35}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Perspectives d'industrialisation}{35}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Conclusion}{36}{section.5.5}%
+\contentsline {chapter}{Conclusion Générale}{37}{chapter*.35}%
+\contentsline {chapter}{\numberline {A}Schémas Électroniques et Câblage}{38}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Schéma de câblage complet}{38}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Configuration TMC2208}{38}{section.A.2}%
+\contentsline {chapter}{\numberline {B}Extraits de Code Source}{39}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Firmware STM32 — Parseur de commandes UART}{39}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Script RPi5 — Serveur TCP acquisition}{39}{section.B.2}%
