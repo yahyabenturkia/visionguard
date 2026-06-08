@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-VisionGuard — Inspection Orchestrator v3
-Laptop orchestrates STM32 (motion+light) + RPi5 (capture) + AI inference stub.
+VisionGuard — Inspection Orchestrator v6
 """
 
 import os
 import sys
+import tty
+import termios
 import serial
 import socket
 import time
@@ -20,10 +21,26 @@ STM32_BAUD      = 115200
 RPI5_HOST       = "192.168.10.2"
 RPI5_PORT       = 9999
 IMAGES_LOCAL    = os.path.expanduser("~/visionguard/inspection")
-HOME_FILE       = os.path.expanduser("~/visionguard/tools/home.json")
 TOTAL_VEINS     = 40
 STEP_PER_VEIN   = 120
+STEP_FINE       = 27
 STABILIZE_DELAY = 0.3
+RETRY_DELAY     = 1.0
+
+# ─── Terminal ─────────────────────────────────────────────────────────────────
+def get_keypress():
+    fd = sys.stdin.fileno()
+    old = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd)
+        ch = sys.stdin.read(1)
+        if ch == '\x1b':
+            ch2 = sys.stdin.read(1)
+            ch3 = sys.stdin.read(1)
+            return ch + ch2 + ch3
+        return ch
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old)
 
 # ─── STM32 ────────────────────────────────────────────────────────────────────
 def stm32_connect():
@@ -63,9 +80,20 @@ def rpi5_send(sock, cmd):
     sock.sendall((cmd + "\n").encode())
     return sock.recv(1024).decode().strip()
 
+def rpi5_capture(sock, cmd):
+    """Capture with 1 automatic retry."""
+    r = rpi5_send(sock, cmd)
+    if r.startswith("OK:"):
+        return r, False
+    print(f"\n  [RETRY] Capture failed → retrying in {RETRY_DELAY}s...")
+    time.sleep(RETRY_DELAY)
+    r = rpi5_send(sock, cmd)
+    if r.startswith("OK:"):
+        return r, False
+    return r, True  # True = failed after retry
+
 # ─── AI Inference STUB ────────────────────────────────────────────────────────
 def ai_predict(image_path: str) -> dict:
-    """STUB — replace with real model when available."""
     result = random.choice(["OK", "OK", "OK", "NOK"])
     return {
         "result": result,
@@ -73,43 +101,83 @@ def ai_predict(image_path: str) -> dict:
         "model": "stub"
     }
 
-# ─── Home ─────────────────────────────────────────────────────────────────────
-def load_home():
-    if os.path.exists(HOME_FILE):
-        with open(HOME_FILE) as f:
-            return json.load(f)
-    return None
+# ─── Manual Positioning ───────────────────────────────────────────────────────
+def manual_positioning(ser):
+    print("\n" + "═" * 50)
+    print("  MANUAL POSITIONING")
+    print("  ← →  Fine movement (~1°)")
+    print("  ENTER  Confirm home position")
+    print("═" * 50)
+
+    while True:
+        print("\r  Use ← → to position. ENTER to confirm.", end="", flush=True)
+        key = get_keypress()
+
+        if key == '\x1b[C':
+            r = stm32_send(ser, f"MOV:{STEP_FINE}")
+            print(f"\r  → +1°  [{r}]                    ", end="", flush=True)
+
+        elif key == '\x1b[D':
+            r = stm32_send(ser, f"MOV:-{STEP_FINE}")
+            print(f"\r  ← -1°  [{r}]                    ", end="", flush=True)
+
+        elif key in ('\r', '\n'):
+            print("\n  [HOME] Position confirmed.")
+            break
+
+        elif key == '\x03':
+            print("\n  Cancelled.")
+            sys.exit(0)
+
+# ─── Progress Bar ─────────────────────────────────────────────────────────────
+def progress_bar(current, total, result="", width=20):
+    filled  = int(width * current / total)
+    bar     = "█" * filled + "░" * (width - filled)
+    percent = int(100 * current / total)
+    print(f"\r  [{bar}] {current:02d}/{total}  {result:<20}", end="", flush=True)
 
 # ─── SCP Transfer ─────────────────────────────────────────────────────────────
-def transfer_images(session_dir: str):
-    print("\n[SCP] Transferring images from RPi5...")
-    os.makedirs(session_dir, exist_ok=True)
+def transfer_and_clear(session_dir: str, wall: str):
+    print(f"\n[SCP] Transferring {wall} wall images...")
+    wall_dir = os.path.join(session_dir, wall.lower())
+    os.makedirs(wall_dir, exist_ok=True)
     cmd = [
         "scp", "-r",
-        f"pi5@{RPI5_HOST}:/home/pi5/visionguard/inspection/",
-        session_dir
+        f"pi5@{RPI5_HOST}:/home/pi5/inspection/",
+        wall_dir
     ]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:
-        print("[SCP] Transfer complete.")
+        print(f"[SCP] {wall} transfer complete.")
         subprocess.run([
             "ssh", f"pi5@{RPI5_HOST}",
-            "rm -rf /home/pi5/visionguard/inspection/*"
+            "rm -rf /home/pi5/inspection/*"
         ])
+        print(f"[SCP] RPi5 cleared.")
     else:
         print(f"[SCP] Failed: {result.stderr}")
 
 # ─── Report ───────────────────────────────────────────────────────────────────
 def generate_report(results: list, session_dir: str, duration: float):
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    report = {
-        "timestamp": ts,
+    ts       = datetime.now().strftime("%Y%m%d_%H%M%S")
+    nok_list = [r for r in results if r["result"] == "NOK"]
+    report   = {
+        "timestamp"       : ts,
         "duration_seconds": round(duration, 1),
-        "total_veins": TOTAL_VEINS,
-        "total_images": len(results),
-        "ok": sum(1 for r in results if r["result"] == "OK"),
-        "nok": sum(1 for r in results if r["result"] == "NOK"),
-        "model": "stub",
+        "total_veins"     : TOTAL_VEINS,
+        "total_images"    : len(results),
+        "ok"              : sum(1 for r in results if r["result"] == "OK"),
+        "nok"             : len(nok_list),
+        "nok_veins"       : [
+            {
+                "vein"      : r["vein"],
+                "wall"      : r["wall"],
+                "file"      : r["file"],
+                "confidence": r["confidence"]
+            }
+            for r in nok_list
+        ],
+        "model"  : "stub",
         "details": results
     }
     report_path = os.path.join(session_dir, f"report_{ts}.json")
@@ -118,22 +186,24 @@ def generate_report(results: list, session_dir: str, duration: float):
     print(f"[Report] Saved: {report_path}")
     return report
 
-# ─── Display ──────────────────────────────────────────────────────────────────
-def print_status(phase, vein, wall, speed, captured, last_file, last_result):
-    print("\n" + "─" * 50)
-    print(f"  Phase    : {phase}")
-    print(f"  Vein     : {vein:02d} / {TOTAL_VEINS}")
-    print(f"  Wall     : {wall}")
-    print(f"  Speed    : {speed} steps/sec")
-    print(f"  Captured : {captured}")
-    print(f"  Last     : {last_file}")
-    print(f"  Result   : {last_result}")
+# ─── NOK Summary ──────────────────────────────────────────────────────────────
+def print_nok_summary(nok_list):
+    print("\n" + "═" * 50)
+    print(f"  NOK SUMMARY — {len(nok_list)} defect(s) found")
     print("─" * 50)
+    if not nok_list:
+        print("  ✔ All veins passed inspection.")
+    else:
+        for item in nok_list:
+            print(f"  ✘ Vein {item['vein']:02d} | {item['wall']:<5} | "
+                  f"{item['file']} | "
+                  f"confidence: {item['confidence']*100:.1f}%")
+    print("═" * 50)
 
 # ─── Inspection Cycle ─────────────────────────────────────────────────────────
 def run_inspection(ser, sock):
-    ts          = datetime.now().strftime("%Y%m%d_%H%M%S")
-    session_dir = os.path.join(IMAGES_LOCAL, f"session_{ts}")
+    date_str    = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    session_dir = os.path.join(IMAGES_LOCAL, f"session_{date_str}")
     os.makedirs(session_dir, exist_ok=True)
     results     = []
     speed       = 800
@@ -141,7 +211,7 @@ def run_inspection(ser, sock):
 
     print("\n" + "═" * 50)
     print("  VISIONGUARD — INSPECTION CYCLE")
-    print(f"  Session  : {ts}")
+    print(f"  Session  : {date_str}")
     print(f"  Veins    : {TOTAL_VEINS}")
     print(f"  Speed    : {speed} steps/sec")
     print(f"  Step/vein: {STEP_PER_VEIN}")
@@ -155,23 +225,21 @@ def run_inspection(ser, sock):
     # ══════════════════════════════════════════════════════════
     # TOUR 1 — LEFT WALLS
     # ══════════════════════════════════════════════════════════
-    print("\n[Tour 1] LEFT walls — starting...")
+    print("\n[Tour 1] LEFT walls\n")
     captured_left = 0
 
     for vein in range(1, TOTAL_VEINS + 1):
 
-        # Move (skip on vein 1 — already at home)
         if vein > 1:
             r = stm32_send(ser, f"MOV:{STEP_PER_VEIN}", timeout=15)
             if r != "OK":
-                print(f"  [ERR] MOV failed vein {vein}: {r}")
+                progress_bar(vein, TOTAL_VEINS, f"ERR MOV v{vein}")
                 continue
 
         time.sleep(STABILIZE_DELAY)
 
-        # Capture
-        r = rpi5_send(sock, "CAPTURE:inspect:L")
-        if r.startswith("OK:"):
+        r, failed = rpi5_capture(sock, "CAPTURE:inspect:L")
+        if not failed:
             filename = r.split(":", 1)[1]
             captured_left += 1
             prediction = ai_predict(filename)
@@ -181,39 +249,31 @@ def run_inspection(ser, sock):
                 "file": filename,
                 **prediction
             })
-            print_status(
-                phase="Tour 1 — LEFT",
-                vein=vein,
-                wall="LEFT",
-                speed=speed,
-                captured=captured_left,
-                last_file=filename,
-                last_result=f"{prediction['result']} ({prediction['confidence']*100:.1f}%)"
+            progress_bar(
+                vein, TOTAL_VEINS,
+                f"{prediction['result']} ({prediction['confidence']*100:.0f}%)"
             )
         else:
-            print(f"  [ERR] Capture failed vein {vein} LEFT: {r}")
+            progress_bar(vein, TOTAL_VEINS, f"FAILED v{vein}")
 
-    # ── RETURN TO HOME ────────────────────────────────────────
-    steps_back = -((TOTAL_VEINS - 1) * STEP_PER_VEIN)
-    print(f"\n[Return] Going back to home ({abs(steps_back)} steps)...")
-    r = stm32_send(ser, f"MOV:{steps_back}", timeout=30)
-    print(f"  [{r}]")
-    time.sleep(0.5)
+    print(f"\n  Done — {captured_left}/{TOTAL_VEINS} captured")
 
-    # ── CAMERA SWITCH CONFIRMATION ────────────────────────────
+    # ── SCP Tour 1 ────────────────────────────────────────────
+    transfer_and_clear(session_dir, "LEFT")
+
+    # ── CAMERA SWITCH ─────────────────────────────────────────
     print("\n" + "═" * 50)
     print("  CAMERA REPOSITIONING REQUIRED")
     print("  → Move camera to RIGHT wall position")
-    print(f"  LEFT images captured : {captured_left}")
-    print(f"  Speed                : {speed} steps/sec")
-    print(f"  Elapsed              : {round(time.time()-start_time, 1)}s")
+    print(f"  LEFT captured : {captured_left} / {TOTAL_VEINS}")
+    print(f"  Elapsed       : {round(time.time()-start_time, 1)}s")
     print("═" * 50)
     input("\n  Press ENTER when camera is in RIGHT position...")
 
     # ══════════════════════════════════════════════════════════
     # TOUR 2 — RIGHT WALLS
     # ══════════════════════════════════════════════════════════
-    print("\n[Tour 2] RIGHT walls — starting...")
+    print("\n[Tour 2] RIGHT walls\n")
     captured_right = 0
 
     for vein in range(1, TOTAL_VEINS + 1):
@@ -221,13 +281,13 @@ def run_inspection(ser, sock):
         if vein > 1:
             r = stm32_send(ser, f"MOV:{STEP_PER_VEIN}", timeout=15)
             if r != "OK":
-                print(f"  [ERR] MOV failed vein {vein}: {r}")
+                progress_bar(vein, TOTAL_VEINS, f"ERR MOV v{vein}")
                 continue
 
         time.sleep(STABILIZE_DELAY)
 
-        r = rpi5_send(sock, "CAPTURE:inspect:R")
-        if r.startswith("OK:"):
+        r, failed = rpi5_capture(sock, "CAPTURE:inspect:R")
+        if not failed:
             filename = r.split(":", 1)[1]
             captured_right += 1
             prediction = ai_predict(filename)
@@ -237,37 +297,39 @@ def run_inspection(ser, sock):
                 "file": filename,
                 **prediction
             })
-            print_status(
-                phase="Tour 2 — RIGHT",
-                vein=vein,
-                wall="RIGHT",
-                speed=speed,
-                captured=captured_right,
-                last_file=filename,
-                last_result=f"{prediction['result']} ({prediction['confidence']*100:.1f}%)"
+            progress_bar(
+                vein, TOTAL_VEINS,
+                f"{prediction['result']} ({prediction['confidence']*100:.0f}%)"
             )
         else:
-            print(f"  [ERR] Capture failed vein {vein} RIGHT: {r}")
+            progress_bar(vein, TOTAL_VEINS, f"FAILED v{vein}")
 
-    # ── RETURN TO HOME ────────────────────────────────────────
-    steps_back = -((TOTAL_VEINS - 1) * STEP_PER_VEIN)
-    print(f"\n[Return] Going back to home ({abs(steps_back)} steps)...")
-    r = stm32_send(ser, f"MOV:{steps_back}", timeout=30)
+    print(f"\n  Done — {captured_right}/{TOTAL_VEINS} captured")
+
+    # ── RETURN TO HOME (MOV:120 after vein 40) ────────────────
+    print("\n[HOME] Returning to vein 1...")
+    r = stm32_send(ser, f"MOV:{STEP_PER_VEIN}", timeout=15)
     print(f"  [{r}]")
-    time.sleep(0.5)
+
+    # ── SCP Tour 2 ────────────────────────────────────────────
+    transfer_and_clear(session_dir, "RIGHT")
 
     # ── LIGHT OFF ─────────────────────────────────────────────
     print("\n[LIGHT] Turning OFF...")
     stm32_send(ser, "LIGHT:OFF")
 
-    # ── TRANSFER + REPORT ─────────────────────────────────────
+    # ── REPORT ────────────────────────────────────────────────
     duration = time.time() - start_time
-    transfer_images(session_dir)
-    report = generate_report(results, session_dir, duration)
+    report   = generate_report(results, session_dir, duration)
+    nok_list = [r for r in results if r["result"] == "NOK"]
+
+    # ── NOK SUMMARY ───────────────────────────────────────────
+    print_nok_summary(nok_list)
 
     # ── FINAL SUMMARY ─────────────────────────────────────────
     print("\n" + "═" * 50)
     print(f"  INSPECTION COMPLETE")
+    print(f"  Date     : {date_str}")
     print(f"  Duration : {round(duration, 1)}s")
     print(f"  Images   : {report['total_images']} / {TOTAL_VEINS * 2}")
     print(f"  OK       : {report['ok']}")
@@ -275,30 +337,25 @@ def run_inspection(ser, sock):
     print(f"  Session  : {session_dir}")
     print("═" * 50)
 
+    # ── BEEP ──────────────────────────────────────────────────
+    subprocess.run(["paplay", "/usr/share/sounds/freedesktop/stereo/complete.oga"],capture_output=True)
+
     return report
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
 def main():
     os.makedirs(IMAGES_LOCAL, exist_ok=True)
 
-    # ── Check home ────────────────────────────────────────────
-    home = load_home()
-    if not home:
-        print("\n[ERROR] No home.json found.")
-        print("  Run set_home.py first to calibrate home position.")
-        sys.exit(1)
-
-    print(f"\n[HOME] Home position loaded — set on {home['timestamp']}")
-
     ser  = stm32_connect()
     sock = rpi5_connect()
 
+    # ── Manual positioning ────────────────────────────────────
+    manual_positioning(ser)
+
     print("\n" + "═" * 50)
     print("  SYSTEM READY")
-    print("  Make sure:")
-    print("  → Motor is at HOME position")
-    print("  → Camera faces LEFT wall")
-    print("  → Lighting circuit connected")
+    print("  → Camera faces LEFT wall ?")
+    print("  → Lighting connected ?")
     print("═" * 50)
 
     try:
