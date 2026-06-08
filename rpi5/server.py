@@ -122,7 +122,7 @@ def handle_command(cmd, cam, counts):
 
 # ─── Session Handler ──────────────────────────────────────────────────────────
 def handle_session(conn, cam):
-    counts = {"good": 0, "defect": 0}
+    counts = {"good": 0, "defect": 0, "inspect": 0}
     buffer = ""
     session_active = True
 
