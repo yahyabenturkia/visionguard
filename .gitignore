@@ -40,3 +40,7 @@ tests/.metadata/
 # OS / editor files
 .DS_Store
 Thumbs.db
+
+# Obsolete / IDE-generated files
+ai/src/train_kaggle.py
+firmware/visionguard_motion/.settings/language.settings.xml
