@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 VisionGuard — RPi5 TCP Server
-Image acquisition server for dataset collection.
+Image acquisition server for dataset collection + live inspection.
 Runs on RPi5 (192.168.10.2), listens for commands from laptop.
 """
 
@@ -65,6 +65,7 @@ def init_camera():
     print(" OK")
     return cam
 
+
 def capture_image(cam, label, wall):
     if label == "good":
         save_dir = GOOD_DIR
@@ -89,7 +90,7 @@ def handle_command(cmd, cam, counts):
             return "ERR:invalid_format", False
         label = parts[1].strip().lower()
         wall = parts[2].strip().upper()
-        if label not in ("good", "defect" , "inspect"):
+        if label not in ("good", "defect", "inspect"):
             return "ERR:invalid_label", False
         if wall not in ("R", "L"):
             return "ERR:invalid_wall", False
@@ -102,6 +103,28 @@ def handle_command(cmd, cam, counts):
         except Exception as e:
             print(f"  [ERR] Capture failed: {e}")
             return "ERR:capture_failed", False
+
+    elif cmd.startswith("CAPTURE_SEND:"):
+        parts = cmd.split(":")
+        if len(parts) != 3:
+            return "ERR:invalid_format", False
+        label = parts[1].strip().lower()
+        wall = parts[2].strip().upper()
+        if label not in ("good", "defect", "inspect"):
+            return "ERR:invalid_label", False
+        if wall not in ("R", "L"):
+            return "ERR:invalid_wall", False
+        try:
+            filename, path = capture_image(cam, label, wall)
+            counts[label] += 1
+            size = os.path.getsize(path)
+            with open(path, "rb") as f:
+                img_bytes = f.read()
+            print(f"  [CAP+SEND] {filename} | {size} bytes")
+            return ("CAPTURE_SEND_OK", filename, size, img_bytes), False
+        except Exception as e:
+            print(f"  [ERR] Capture+send failed: {e}")
+            return "ERR:capture_send_failed", False
 
     elif cmd.startswith("DELETE:"):
         filename = cmd.split(":", 1)[1].strip()
@@ -142,8 +165,16 @@ def handle_session(conn, cam):
 
                 print(f"  [CMD] Received: {line}")
                 response, quit_flag = handle_command(line, cam, counts)
-                conn.sendall((response + "\n").encode("utf-8"))
-                print(f"  [RSP] Sent: {response}")
+
+                if isinstance(response, tuple) and response[0] == "CAPTURE_SEND_OK":
+                    _, filename, size, img_bytes = response
+                    header = f"OK:{filename}:{size}\n".encode("utf-8")
+                    conn.sendall(header)
+                    conn.sendall(img_bytes)
+                    print(f"  [RSP] Sent header + {size} bytes")
+                else:
+                    conn.sendall((response + "\n").encode("utf-8"))
+                    print(f"  [RSP] Sent: {response}")
 
                 if quit_flag:
                     session_active = False
