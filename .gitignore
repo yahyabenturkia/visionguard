@@ -1,27 +1,42 @@
-# Python
+# Python environment and cache
 .venv/
-__pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
 
-# Dataset — never push images to git
-dataset/
+# Datasets and captured inspection data
+raw_data/
+inspection/
+ai/crops/
+ai/dataset/
+ai/dataset.zip
+ai/src.zip
+ai/test_outputs/
+ai/labeled_manifest.txt
 
-# STM32CubeIDE build artifacts
-firmware/Debug/
-firmware/Release/
+# Keep only the final trained model
+ai/models/*
+!ai/models/resnet18_v2.pth
+
+# PFE report - kept locally, not in GitHub
+docs/rapport/
+
+# STM32CubeIDE generated build artifacts
+firmware/**/Debug/
+firmware/**/Release/
+firmware/.metadata/
+tests/.metadata/
 *.elf
 *.bin
 *.hex
 *.map
+*.o
+*.d
+*.su
+*.cyclo
 
-# OS
+# OS / editor files
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-firmware/.metadata/
-tests/.metadata/
