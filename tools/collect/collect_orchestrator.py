@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 VisionGuard — Dataset Collection Orchestrator
-Runs on laptop. Controls STM32 (motion) + RPi5 (capture).
+Runs on laptop. Controls STM32 (motion + lighting) + RPi5 (capture).
 """
 
 import os
@@ -19,13 +19,20 @@ STM32_PORT    = "/dev/ttyACM0"
 STM32_BAUD    = 115200
 RPI5_HOST     = "192.168.10.2"
 RPI5_PORT     = 9999
-DATASET_LOCAL = os.path.expanduser("~/visionguard/dataset")
+DATASET_LOCAL = os.path.expanduser("~/visionguard/raw_data")
 
 SPEED_MIN     = 100
 SPEED_MAX     = 2000
 SPEED_DEFAULT = 800
 SPEED_STEP    = 200
 TOTAL_VEINS   = 40
+
+# Lighting: 10 levels (0-9). Duty range 0-999 on STM32 PWM.
+LIGHT_MAX_DUTY = 999
+LIGHT_STEP     = LIGHT_MAX_DUTY // 9   # 111 per level → 9*111 = 999
+
+def level_to_duty(level):
+    return min(level * LIGHT_STEP, LIGHT_MAX_DUTY)
 
 # ─── Terminal helpers ─────────────────────────────────────────────────────────
 def get_keypress():
@@ -48,12 +55,15 @@ def clear_line():
 # ─── Display ──────────────────────────────────────────────────────────────────
 def print_display(state):
     os.system("clear")
+    light_level = state["light_level"]
+    light_str = "OFF" if light_level == 0 else f"{light_level}/9 ({level_to_duty(light_level)})"
     print("═" * 51)
     print("   VISIONGUARD — DATASET COLLECTION")
     print("   Pursuit Aerospace Tunisia")
     print("═" * 51)
     print(f"  Position : Vein {state['vein']:02d} / {TOTAL_VEINS}")
     print(f"  Speed    : {state['speed']} steps/sec")
+    print(f"  Light    : {light_str}")
     print(f"  Label    : {'✔ GOOD' if state['label'] == 'good' else '✘ DEFECT'}")
     print(f"  Wall     : {'RIGHT' if state['wall'] == 'R' else 'LEFT'}")
     print(f"  Captured : Good: {state['counts']['good']} | Defect: {state['counts']['defect']} | Total: {state['counts']['good'] + state['counts']['defect']}")
@@ -63,8 +73,8 @@ def print_display(state):
         print(f"  Last     : —")
     print("─" * 51)
     print("  H=Home  ←→=Fine(1°)  N/P=Vein  ↑↓=Speed")
-    print("  R=Right  L=Left  F=Light  1=Good  2=Defect")
-    print("  ENTER=Capture  D=Del  Q=Quit")
+    print("  0-9=Light(0=off)  G=Good  B=Defect")
+    print("  R=Right  L=Left  ENTER=Capture  D=Del  Q=Quit")
     print("═" * 51)
 
 # ─── STM32 Communication ──────────────────────────────────────────────────────
@@ -149,7 +159,7 @@ def main():
         "last_file": None,
         "counts": {"good": 0, "defect": 0},
         "homed": False,
-        "light": False,
+        "light_level": 0,
         "message": "Press H to home before starting."
     }
 
@@ -170,15 +180,25 @@ def main():
                     state["message"] = f"HOME failed: {r}"
 
             # ── FINE RIGHT ────────────────────────────────────────
+            #elif key == '\x1b[C':
+            #    r = stm32_send(ser, "MOV:-27")
+            #    state["message"] = f"→ Fine +1°  [{r}]"
+            
+            # ── FINE LEFT ─────────────────────────────────────────
+            #elif key == '\x1b[D':
+            #    r = stm32_send(ser, "MOV:27")
+            #    state["message"] = f"← Fine -1°  [{r}]"
+            # ── FINE RIGHT ────────────────────────────────────────
             elif key == '\x1b[C':
-                r = stm32_send(ser, "MOV:27")
+                r = stm32_send(ser, "MOV:-27")
+                state["total_steps"] = 0
                 state["message"] = f"→ Fine +1°  [{r}]"
 
             # ── FINE LEFT ─────────────────────────────────────────
             elif key == '\x1b[D':
-                r = stm32_send(ser, "MOV:-27")
+                r = stm32_send(ser, "MOV:27")
+                state["total_steps"] = 0
                 state["message"] = f"← Fine -1°  [{r}]"
-
             # ── SPEED UP ──────────────────────────────────────────
             elif key == '\x1b[A':
                 new_speed = min(state["speed"] + SPEED_STEP, SPEED_MAX)
@@ -196,26 +216,55 @@ def main():
                 state["message"] = f"↓ Speed: {state['speed']} steps/sec  [{r}]"
 
             # ── NEXT VEIN ─────────────────────────────────────────
+            #elif key.lower() == 'n':
+            #    r = stm32_send(ser, "MOV:120")
+            #    if r == "OK":
+            #        state["vein"] = min(state["vein"] + 1, TOTAL_VEINS)
+            #    state["message"] = f"N → Next vein  [{r}]"
+            
+            # ── PREVIOUS VEIN ─────────────────────────────────────
+            #elif key.lower() == 'p':
+            #    r = stm32_send(ser, "MOV:-120")
+            #    if r == "OK":
+            #        state["vein"] = max(state["vein"] - 1, 1)
+            #    state["message"] = f"P → Previous vein  [{r}]"
+            #------- next and previous handler -----
             elif key.lower() == 'n':
-                r = stm32_send(ser, "MOV:120")
+                state["total_steps"] = state.get("total_steps", 0) + 1
+                step = 124 if state["total_steps"] % 2 == 0 else 120
+                r = stm32_send(ser, f"MOV:{step}")
                 if r == "OK":
                     state["vein"] = min(state["vein"] + 1, TOTAL_VEINS)
-                state["message"] = f"N → Next vein  [{r}]"
+                state["message"] = f"N → Next vein (MOV:{step})  [{r}]"
 
-            # ── PREVIOUS VEIN ─────────────────────────────────────
             elif key.lower() == 'p':
-                r = stm32_send(ser, "MOV:-120")
+                state["total_steps"] = state.get("total_steps", 0) - 1
+                step = 124 if state["total_steps"] % 2 == 0 else 120
+                r = stm32_send(ser, f"MOV:-{step}")
                 if r == "OK":
                     state["vein"] = max(state["vein"] - 1, 1)
-                state["message"] = f"P → Previous vein  [{r}]"
+                state["message"] = f"P → Previous vein (MOV:-{step})  [{r}]"
+            # ── LIGHT LEVEL 0-9 ───────────────────────────────────
+            elif key in '0123456789':
+                level = int(key)
+                duty = level_to_duty(level)
+                r = stm32_send(ser, f"LIGHT:SET:{duty}")
+                if r == "OK":
+                    state["light_level"] = level
+                    if level == 0:
+                        state["message"] = f"💡 Light OFF  [{r}]"
+                    else:
+                        state["message"] = f"💡 Light level {level}/9 (duty {duty})  [{r}]"
+                else:
+                    state["message"] = f"Light failed: {r}"
 
             # ── LABEL GOOD ────────────────────────────────────────
-            elif key == '1':
+            elif key.lower() == 'g':
                 state["label"] = "good"
                 state["message"] = "Label set to GOOD."
 
             # ── LABEL DEFECT ──────────────────────────────────────
-            elif key == '2':
+            elif key.lower() == 'b':
                 state["label"] = "defect"
                 state["message"] = "Label set to DEFECT."
 
@@ -228,17 +277,6 @@ def main():
             elif key.lower() == 'l':
                 state["wall"] = "L"
                 state["message"] = "Wall set to LEFT."
-            
-            # ── LIGHT TOGGLE ──────────────────────────────────────────────
-            elif key.lower() == 'f':
-                if state.get("light", False):
-                    r = stm32_send(ser, "LIGHT:OFF")
-                    state["light"] = False
-                    state["message"] = f"💡 Light OFF  [{r}]"
-                else:
-                    r = stm32_send(ser, "LIGHT:ON")
-                    state["light"] = True
-                    state["message"] = f"💡 Light ON  [{r}]"
 
             # ── CAPTURE ───────────────────────────────────────────
             elif key in ('\r', '\n', ' '):
@@ -268,7 +306,7 @@ def main():
             # ── QUIT ──────────────────────────────────────────────
             elif key.lower() == 'q':
                 stm32_send(ser, "LIGHT:OFF")
-                state["light"] = False
+                state["light_level"] = 0
                 r = rpi5_send(sock, "QUIT")
                 state["message"] = "Session ended. Transferring dataset..."
                 print_display(state)
@@ -280,7 +318,6 @@ def main():
                 stm32_send(ser, "LIGHT:OFF")
                 break
 
-            state["message_line"] = state.get("message", "")
             print_display(state)
             print(f"  {state['message']}")
 
