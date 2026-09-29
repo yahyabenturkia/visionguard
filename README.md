@@ -80,7 +80,7 @@ The rig was designed in SolidWorks and 3D printed: stepper and belt indexing,
 fixed camera mount, controlled lighting enclosure. Motor sizing, step resolution
 and lighting geometry were all derived from the part specification.
 
-![rig](docs/banc_visionguard_assemble.jpg)
+![rig](docs/banc_visionguard_assemble.png)
 
 ---
 
