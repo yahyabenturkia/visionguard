@@ -1,0 +1,22 @@
+# Core
+torch==2.12.0
+torchvision==0.27.0
+numpy==2.4.6
+pillow==12.2.0
+
+# Vision
+opencv-python==4.13.0.92
+
+# Training / evaluation
+scikit-learn>=1.4
+tqdm==4.67.3
+
+# Hardware I/O
+pyserial==3.5
+
+# ---
+# GPU: install torch/torchvision from the appropriate PyTorch index
+#   https://pytorch.org/get-started/locally/
+#
+# Raspberry Pi 5 only: picamera2 ships with Raspberry Pi OS, not pip
+#   sudo apt install -y python3-picamera2
