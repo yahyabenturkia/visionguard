@@ -111,7 +111,7 @@ pip install -r requirements.txt
 Flash the STM32 firmware from `firmware/`, then run the orchestrator:
 
 ```bash
-python orchestration/main.py
+python orchestration/run_inspection.py
 ```
 
 ---
