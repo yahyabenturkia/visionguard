@@ -86,14 +86,15 @@ and lighting geometry were all derived from the part specification.
 
 ## Repository
 
-* firmware/ STM32 F446RE motion control (C, HAL)
-* rpi5/ image acquisition on Raspberry Pi 5
-* orchestration/ laptop master — sequencing and reporting
-* ai/ training and inference pipeline
-* tools/ dataset and calibration utilities
-* tests/ validation scripts
-* docs/ diagrams, photos, demo
-
+```
+firmware/        STM32 F446RE motion control (C, HAL)
+rpi5/            image acquisition on Raspberry Pi 5
+orchestration/   laptop master — sequencing and reporting
+ai/              training and inference pipeline
+tools/           dataset and calibration utilities
+tests/           validation scripts
+docs/            diagrams, photos, demo
+```
 
 ---
 
