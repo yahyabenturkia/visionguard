@@ -44,3 +44,6 @@ Thumbs.db
 # Obsolete / IDE-generated files
 ai/src/train_kaggle.py
 firmware/visionguard_motion/.settings/language.settings.xml
+__pycache__/
+*.pyc
+.venv/
